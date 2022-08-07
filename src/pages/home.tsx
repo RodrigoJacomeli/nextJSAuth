@@ -1,11 +1,13 @@
 import { useContext, useEffect } from "react"
+import { Can } from "../components/Can";
 import { AuthContext } from "../contexts/AuthContext"
 import { setupApiClient } from "../services/api";
 import { api } from "../services/apiClient";
 import { withSSRAuth } from "../utils/withSSRAuth";
 
 export default function Home() {
-  const { user } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
+
 
   useEffect(() => {
     api.get('/me')
@@ -16,8 +18,14 @@ export default function Home() {
   return (
     <div>
       <h1>Home</h1>
-      <br />
-      <span>{user?.email}</span>
+
+      <button onClick={signOut}>Sign Out</button>
+
+      <Can permissions={['metrics.list']}>
+        <div>
+          Métricas
+        </div>
+      </Can>
     </div>
   )
 }
